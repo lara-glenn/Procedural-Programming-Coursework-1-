@@ -5,14 +5,15 @@
 
 // Define an appropriate struct
 typedef struct {
-	char date[110];
-	char time[60];
+	char date[11];
+	char time[6];
 	char steps[1000];
 } FITNESS_DATA;
 
 // Define any additional variables here
+    int counter = 0;
+    int i;  
 
-int date1;
     
 // This is your helper function. Do not change it in any way.
 // Inputs: character array representing a row; the delimiter character
@@ -48,9 +49,7 @@ int main() {
     FITNESS_DATA data[1000];
     int buffer_size = 1000;
     char line[buffer_size];
-    int counter = 0;
-    int i;
-    int num_lines;
+    
 
 
     char* filename = "FitnessData_2023.csv";
@@ -64,31 +63,37 @@ int main() {
     char time[500];
     char steps[500];
 
+
     while (fgets(line, buffer_size, file)){
         tokeniseRecord(line, ",", date, time, steps);
+
+        //creates a copy of the data in each line and saves the different values to their respective arrays
 
         strcpy(data[counter].date, date);
         strcpy(data[counter].time, time);
         strcpy(data[counter].steps, steps);
-        printf("%s", line);
 
+        //counter increments so it is able to keep track of how many lines there are as the csv file is read
 
         counter++;
-
+    
     }
-
+    //prints the value of counter, which will allow the user to see the number of records in the csv file
     printf("Number of records in file: %d\n", counter);
+    //printf("%s\n", data[0].date);
+    //printf("%s\n", data[3].steps);
+
+
+
+    //for loop that prints the first 3 values from the date,time and steps arrays and prints them out with a slash between them
+     for (i=0; i<3; i++){
+            printf("%s/%s/%s", data[i].date, data[i].time, data[i].steps);
+
+        } 
+
+  
     //printf("%ls\n", data);
-
-
-
-
-
-    //printf("%s\n", FITNESS_DATA.steps);
-    
-    
-
-
+    //printf("%d\n", *steps);
 
     return 0;
 
