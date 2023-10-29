@@ -74,7 +74,6 @@ int main() {
         strcpy(data[counter].time, time);
         strcpy(data[counter].steps, steps);
 
-        integer_steps = atoi(steps);
 
         //counter increments so it is able to keep track of how many lines there are as the csv file is read
 
@@ -90,6 +89,8 @@ int main() {
 
     //for loop that prints the first 3 values from the date,time and steps arrays and prints them out with a slash between them
      for (i=0; i<3; i++){
+            integer_steps = atoi(data[i].steps);
+
             printf("%s/%s/%d\n", data[i].date, data[i].time, integer_steps);
 
         } 
