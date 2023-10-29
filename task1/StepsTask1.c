@@ -13,6 +13,7 @@ typedef struct {
 // Define any additional variables here
     int counter = 0;
     int i;  
+    int integer_steps;
 
     
 // This is your helper function. Do not change it in any way.
@@ -73,6 +74,8 @@ int main() {
         strcpy(data[counter].time, time);
         strcpy(data[counter].steps, steps);
 
+        integer_steps = atoi(steps);
+
         //counter increments so it is able to keep track of how many lines there are as the csv file is read
 
         counter++;
@@ -87,7 +90,7 @@ int main() {
 
     //for loop that prints the first 3 values from the date,time and steps arrays and prints them out with a slash between them
      for (i=0; i<3; i++){
-            printf("%s/%s/%s", data[i].date, data[i].time, data[i].steps);
+            printf("%s/%s/%d\n", data[i].date, data[i].time, integer_steps);
 
         } 
 
