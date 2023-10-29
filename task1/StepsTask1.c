@@ -11,6 +11,8 @@ typedef struct {
 } FITNESS_DATA;
 
 // Define any additional variables here
+
+int date1;
     
 // This is your helper function. Do not change it in any way.
 // Inputs: character array representing a row; the delimiter character
@@ -48,6 +50,7 @@ int main() {
     char line[buffer_size];
     int counter = 0;
     int i;
+    int num_lines;
 
 
     char* filename = "FitnessData_2023.csv";
@@ -57,7 +60,6 @@ int main() {
         return 1;
     }
 
-    //char pos[50];
     char date[1000];
     char time[500];
     char steps[500];
@@ -68,12 +70,19 @@ int main() {
         strcpy(data[counter].date, date);
         strcpy(data[counter].time, time);
         strcpy(data[counter].steps, steps);
+        printf("%s", line);
+
 
         counter++;
 
     }
 
     printf("Number of records in file: %d\n", counter);
+    //printf("%ls\n", data);
+
+
+
+
 
     //printf("%s\n", FITNESS_DATA.steps);
     
