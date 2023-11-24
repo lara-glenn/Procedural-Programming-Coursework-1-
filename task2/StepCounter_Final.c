@@ -17,6 +17,7 @@ int counter = 0;
 
 
 
+
 // This is your helper function. Do not change it in any way.
 // Inputs: character array representing a row; the delimiter character
 // Ouputs: date character array; time character array; steps character array
@@ -147,16 +148,83 @@ float calculatemean(FILE *filemean)
     return result;
     return mean;
 
+}
 
+void fewestSteps(FILE *filefew)
+{
+    rewind(filefew);
+
+    FITNESS_DATA data[1000];
+    char date[1000];
+    char time[500];
+    char steps[500];
+    int currentSteps;
+    int index;
+    int i=0;
+    int minSteps = __INT_MAX__;
+    int buffer_size = 1000;
+    char line[buffer_size];
+    char filename[buffer_size];
+
+    while (fgets(line, buffer_size, filefew)){
+        tokeniseRecord(line, ",", date, time, steps);
+
+        currentSteps = atoi(steps);
+
+        if (currentSteps < minSteps) {
+            minSteps = currentSteps;
+            index = i;
+            strcpy(data[i].date, date);
+            strcpy(data[i].time, time);
+        }
+        
+        i++;
+        
+    }
+
+    printf("Fewest steps: %s %s\n", data[index].date, data[index].time);
 
 }
 
+void largestSteps(FILE *filelarge) 
+{
+    rewind(filelarge);
 
-void largestSteps(FILE *filelarge){
+    FITNESS_DATA data[1000];
+    char date[1000];
+    char time[500];
+    char steps[500];
+    int index;
+    int i=0;
+    int buffer_size = 1000;
+    char line[buffer_size];
+    char filename[buffer_size];
+
+    int currentSteps;
+    int maxSteps = 0;
 
 
+    while (fgets(line, buffer_size, filelarge)){
+        tokeniseRecord(line, ",", date, time, steps);
+
+        currentSteps = atoi(steps);
+
+        if (currentSteps > maxSteps) {
+            maxSteps = currentSteps;
+            index = i;
+            strcpy(data[i].date, date);
+            strcpy(data[i].time, time);
+        }
+        
+        i++;
+        
+    }
+
+    printf("Largest steps: %s %s\n", data[index].date, data[index].time);
    
 }
+
+
 // Complete the main function
 int main() {
     FILE *input = NULL;
@@ -201,7 +269,14 @@ int main() {
         case 'b':
             totalrecords(input);
             break;
-
+        case 'C':
+        case 'c':
+            fewestSteps(input);
+            break;
+        case 'D':
+        case 'd':
+            largestSteps(input);
+            break;
 
         case 'E':
         case 'e':
