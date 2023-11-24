@@ -224,6 +224,45 @@ void largestSteps(FILE *filelarge)
    
 }
 
+void longestperiod (FILE *longestperiodfile)
+{
+    rewind(longestperiodfile);
+
+    FITNESS_DATA data[1000];
+    char date[1000];
+    char time[500];
+    char steps[500];
+    
+    int buffer_size = 1000;
+    char line[buffer_size];
+    char filename[buffer_size];
+
+    int start = -1;
+    int i;
+
+
+    while (fgets(line, buffer_size, longestperiodfile)){
+        tokeniseRecord(line, ",", date, time, steps);
+
+        int stepcount = atoi(steps);
+
+        if (stepcount>500 && start == -1){
+            start = i;
+
+            printf("Longest period start: %s %s\n", date, time);
+        }
+
+        else if (stepcount <= 500 && start != -1){
+            printf("Longest period end: %s %s\n", date, time);
+            start = -1;
+        }
+
+        i++;
+
+    }
+    
+}
+
 
 // Complete the main function
 int main() {
@@ -263,8 +302,6 @@ int main() {
         case 'a':
             input = importfile();
             break;
-
-
         case 'B':
         case 'b':
             totalrecords(input);
@@ -281,7 +318,11 @@ int main() {
         case 'E':
         case 'e':
             calculatemean(input);
-
+            break;
+        
+        case 'F':
+        case 'f':
+            longestperiod(input);
             break;
         case 'Q':
         case 'q':
