@@ -82,6 +82,8 @@ FILE* importfile()
 void totalrecords(FILE *filerecords)
 {
     rewind(filerecords);
+    FITNESS_DATA data[1000];
+
 
 
     char date[1000];
@@ -259,7 +261,7 @@ void longestperiod (FILE *longestperiodfile)
 
             if (currentIndex - start > longestEnd - longestStart){
                 longestStart = start;
-                longestEnd = currentIndex;
+                longestEnd = currentIndex -1;
             }
             start = -1;
         }
@@ -270,7 +272,8 @@ void longestperiod (FILE *longestperiodfile)
 
     }
 
-    printf("Longest: %s %s\n", data[longestStart].date, data[longestStart].time);
+    printf("Longest period starts: %s %s\n", data[longestStart].date, data[longestStart].time);
+    printf("Longest period ends: %s %s\n", data[longestEnd].date, data[longestEnd].time);
 
 
     
