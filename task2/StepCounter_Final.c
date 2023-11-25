@@ -238,28 +238,41 @@ void longestperiod (FILE *longestperiodfile)
     char filename[buffer_size];
 
     int start = -1;
-    int i;
+    int currentIndex = 0;
+    int longestStart = -1;
+    int longestEnd = -1;
 
 
     while (fgets(line, buffer_size, longestperiodfile)){
         tokeniseRecord(line, ",", date, time, steps);
+        strcpy(data[counter].date, date);
+        strcpy(data[counter].time, time);
 
         int stepcount = atoi(steps);
 
         if (stepcount>500 && start == -1){
-            start = i;
+            start = currentIndex;
 
-            printf("Longest period start: %s %s\n", date, time);
         }
 
         else if (stepcount <= 500 && start != -1){
-            printf("Longest period end: %s %s\n", date, time);
+
+            if (currentIndex - start > longestEnd - longestStart){
+                longestStart = start;
+                longestEnd = currentIndex;
+            }
             start = -1;
         }
 
-        i++;
+        currentIndex++;
+        counter++;
+
 
     }
+
+    printf("Longest: %s %s\n", data[longestStart].date, data[longestStart].time);
+
+
     
 }
 
@@ -345,10 +358,3 @@ int main() {
     return 0;
    
 }
-
-
-
-
-
-
-
