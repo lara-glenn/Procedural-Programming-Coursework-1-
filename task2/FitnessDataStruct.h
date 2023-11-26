@@ -22,8 +22,12 @@ FILE *open_file(char *filename, char *mode)
 	FILE *input = fopen(filename, mode);
 	if (!input)
 	{
-		printf("Error: could not open file\n");
+		printf("Error: Could not find or open file\n");
 		return NULL;
+	}
+	else{
+        printf("File successfully loaded.\n");
+
 	}
 
 	return input;

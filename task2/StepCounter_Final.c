@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
 #include "FitnessDataStruct.h"
 
 
@@ -48,6 +47,7 @@ void tokeniseRecord(const char *input, const char *delimiter,
                     }
 
 
+//function that runs when A is called - will use sscanf on user input to import correct file
 FILE* importfile()
 {
 
@@ -66,10 +66,6 @@ FILE* importfile()
 
     FILE *input = open_file(filename, "r");
 
-
-    printf("File opened\n");
-
-
     return input;
 
 
@@ -78,9 +74,10 @@ FILE* importfile()
 
 
 
-
+//function that counts the number of records in the file and returns it 
 void totalrecords(FILE *filerecords)
 {
+    //rewind used if user wants to see total records again so pointer starts counting from beginning of text file
     rewind(filerecords);
     FITNESS_DATA data[1000];
 
@@ -104,7 +101,7 @@ void totalrecords(FILE *filerecords)
         strcpy(data[counter].time, time);
         strcpy(data[counter].steps, steps);
 
-
+        //counter keeps track of the number of lines in the data file
         counter++;
     }
 
@@ -112,7 +109,7 @@ void totalrecords(FILE *filerecords)
     printf("Number of records in file: %d\n", counter);
 }
 
-
+//function that calculate the mean of the step count and returns it
 float calculatemean(FILE *filemean)
 {
     rewind(filemean);
@@ -131,7 +128,7 @@ float calculatemean(FILE *filemean)
     while (fgets(line, buffer_size, filemean)){
         tokeniseRecord(line, ",", date, time, steps);
 
-
+        //convert steps from string to int so mathematical operations can be completed on the data
         int numSteps = atoi(steps);
 
 
@@ -142,6 +139,7 @@ float calculatemean(FILE *filemean)
     }
 
     float mean =(float) num/i;
+    //0.5 added to mean to round value
     int result = mean + 0.5;
 
 
@@ -160,9 +158,9 @@ void fewestSteps(FILE *filefew)
     char date[1000];
     char time[500];
     char steps[500];
-    int currentSteps;
     int index;
     int i=0;
+    //setting the value of minsteps to the maximum possible value so that the function will be able to calcualte the minimum steps taken correctly 
     int minSteps = __INT_MAX__;
     int buffer_size = 1000;
     char line[buffer_size];
@@ -171,7 +169,8 @@ void fewestSteps(FILE *filefew)
     while (fgets(line, buffer_size, filefew)){
         tokeniseRecord(line, ",", date, time, steps);
 
-        currentSteps = atoi(steps);
+        //converting steps to an integer value
+        int currentSteps = atoi(steps);
 
         if (currentSteps < minSteps) {
             minSteps = currentSteps;
@@ -211,8 +210,10 @@ void largestSteps(FILE *filelarge)
 
         currentSteps = atoi(steps);
 
+        //if the step count on the current line is a greater value than the highest step count currently stored in maxSteps, then maxSteps is replaced with the current step count
         if (currentSteps > maxSteps) {
             maxSteps = currentSteps;
+            //the index of the maximum steps is saved so the line with other information about date and time can be returned
             index = i;
             strcpy(data[i].date, date);
             strcpy(data[i].time, time);
@@ -239,6 +240,7 @@ void longestperiod (FILE *longestperiodfile)
     char line[buffer_size];
     char filename[buffer_size];
 
+    //starting at -1 as 0 index has data at it
     int start = -1;
     int currentIndex = 0;
     int longestStart = -1;
@@ -252,7 +254,7 @@ void longestperiod (FILE *longestperiodfile)
 
         int stepcount = atoi(steps);
 
-        if (stepcount>500 && start == -1){
+        if (stepcount > 500 && start == -1){
             start = currentIndex;
 
         }
@@ -269,16 +271,12 @@ void longestperiod (FILE *longestperiodfile)
         currentIndex++;
         counter++;
 
-
     }
 
     printf("Longest period starts: %s %s\n", data[longestStart].date, data[longestStart].time);
     printf("Longest period ends: %s %s\n", data[longestEnd].date, data[longestEnd].time);
-
-
     
 }
-
 
 // Complete the main function
 int main() {
@@ -290,6 +288,7 @@ int main() {
     char line[buffer_size];
     char filename[buffer_size];
     char chosen_option;
+    char upper_char;
 
 
     while(1)
@@ -302,9 +301,7 @@ int main() {
         printf("E: Find the mean step count of all the records in the file\n");
         printf("F: Find the longest continuous period where the step count is above 500 steps\n");
         printf("Q: Quit\n");
-
-
-   
+        printf("Enter choice:");
 
 
     chosen_option = getchar();
@@ -312,51 +309,44 @@ int main() {
 
     while (getchar() != '\n');
 
+        switch(chosen_option){
+            case 'A':
+            case 'a':
+                input = importfile();
+                break;
+            case 'B':
+            case 'b':
+                totalrecords(input);
+                break;
+            case 'C':
+            case 'c':
+                fewestSteps(input);
+                break;
+            case 'D':
+            case 'd':
+                largestSteps(input);
+                break;
 
-    switch(chosen_option){
-        case 'A':
-        case 'a':
-            input = importfile();
-            break;
-        case 'B':
-        case 'b':
-            totalrecords(input);
-            break;
-        case 'C':
-        case 'c':
-            fewestSteps(input);
-            break;
-        case 'D':
-        case 'd':
-            largestSteps(input);
-            break;
-
-        case 'E':
-        case 'e':
-            calculatemean(input);
-            break;
-        
-        case 'F':
-        case 'f':
-            longestperiod(input);
-            break;
-        case 'Q':
-        case 'q':
-            return 0;
-            break;
-
+            case 'E':
+            case 'e':
+                calculatemean(input);
+                break;
+            
+            case 'F':
+            case 'f':
+                longestperiod(input);
+                break;
+            case 'Q':
+            case 'q':
+                return 0;
+                break;
+            default:
+            printf("Invalid choice. Try again.\n");
 
     }
-
-
-       
-
-
+    
            
-    }
-
-
-   
+    }  
    
     return 0;
    
