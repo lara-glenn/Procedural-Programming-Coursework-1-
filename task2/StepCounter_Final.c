@@ -66,6 +66,10 @@ FILE* importfile()
 
     FILE *input = open_file(filename, "r");
 
+    if (input == NULL) {
+        return NULL;
+    }
+
     return input;
 
 
@@ -75,10 +79,10 @@ FILE* importfile()
 
 
 //function that counts the number of records in the file and returns it 
-void totalrecords(FILE *filerecords)
+void totalrecords(FILE *input)
 {
     //rewind used if user wants to see total records again so pointer starts counting from beginning of text file
-    rewind(filerecords);
+    rewind(input);
     FITNESS_DATA data[1000];
 
 
@@ -93,7 +97,7 @@ void totalrecords(FILE *filerecords)
     char filename[buffer_size];
 
 
-    while (fgets(line, buffer_size, filerecords)){
+    while (fgets(line, buffer_size, input)){
         tokeniseRecord(line, ",", date, time, steps);
 
 
@@ -110,9 +114,9 @@ void totalrecords(FILE *filerecords)
 }
 
 //function that calculate the mean of the step count and returns it
-float calculatemean(FILE *filemean)
+float calculatemean(FILE *input)
 {
-    rewind(filemean);
+    rewind(input);
 
     FITNESS_DATA data[1000];
     char date[1000];
@@ -125,7 +129,7 @@ float calculatemean(FILE *filemean)
     char filename[buffer_size];
 
 
-    while (fgets(line, buffer_size, filemean)){
+    while (fgets(line, buffer_size, input)){
         tokeniseRecord(line, ",", date, time, steps);
 
         //convert steps from string to int so mathematical operations can be completed on the data
@@ -150,9 +154,9 @@ float calculatemean(FILE *filemean)
 
 }
 
-void fewestSteps(FILE *filefew)
+void fewestSteps(FILE *input)
 {
-    rewind(filefew);
+    rewind(input);
 
     FITNESS_DATA data[1000];
     char date[1000];
@@ -166,7 +170,7 @@ void fewestSteps(FILE *filefew)
     char line[buffer_size];
     char filename[buffer_size];
 
-    while (fgets(line, buffer_size, filefew)){
+    while (fgets(line, buffer_size, input)){
         tokeniseRecord(line, ",", date, time, steps);
 
         //converting steps to an integer value
@@ -187,9 +191,9 @@ void fewestSteps(FILE *filefew)
 
 }
 
-void largestSteps(FILE *filelarge) 
+void largestSteps(FILE *input) 
 {
-    rewind(filelarge);
+    rewind(input);
 
     FITNESS_DATA data[1000];
     char date[1000];
@@ -205,7 +209,7 @@ void largestSteps(FILE *filelarge)
     int maxSteps = 0;
 
 
-    while (fgets(line, buffer_size, filelarge)){
+    while (fgets(line, buffer_size, input)){
         tokeniseRecord(line, ",", date, time, steps);
 
         currentSteps = atoi(steps);
@@ -227,9 +231,9 @@ void largestSteps(FILE *filelarge)
    
 }
 
-void longestperiod (FILE *longestperiodfile)
+void longestperiod (FILE *input)
 {
-    rewind(longestperiodfile);
+    rewind(input);
 
     FITNESS_DATA data[1000];
     char date[1000];
@@ -247,7 +251,7 @@ void longestperiod (FILE *longestperiodfile)
     int longestEnd = -1;
 
 
-    while (fgets(line, buffer_size, longestperiodfile)){
+    while (fgets(line, buffer_size, input)){
         tokeniseRecord(line, ",", date, time, steps);
         strcpy(data[counter].date, date);
         strcpy(data[counter].time, time);
