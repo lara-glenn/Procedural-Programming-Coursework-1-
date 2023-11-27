@@ -111,6 +111,7 @@ void totalrecords(FILE *input)
 
 
     printf("Number of records in file: %d\n", counter);
+    counter = 0;
 }
 
 //function that calculate the mean of the step count and returns it
@@ -280,6 +281,8 @@ void longestperiod (FILE *input)
     printf("Longest period starts: %s %s\n", data[longestStart].date, data[longestStart].time);
     printf("Longest period ends: %s %s\n", data[longestEnd].date, data[longestEnd].time);
     
+    longestStart = 0;
+    longestEnd = 0;
 }
 
 // Complete the main function
