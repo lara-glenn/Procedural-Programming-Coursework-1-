@@ -67,7 +67,8 @@ FILE* importfile()
     FILE *input = open_file(filename, "r");
 
     if (input == NULL) {
-        return NULL;
+        exit (1);
+        
     }
 
     return input;
@@ -110,7 +111,7 @@ void totalrecords(FILE *input)
     }
 
 
-    printf("Number of records in file: %d\n", counter);
+    printf("Total records: %d\n", counter);
     counter = 0;
 }
 
@@ -278,8 +279,8 @@ void longestperiod (FILE *input)
 
     }
 
-    printf("Longest period starts: %s %s\n", data[longestStart].date, data[longestStart].time);
-    printf("Longest period ends: %s %s\n", data[longestEnd].date, data[longestEnd].time);
+    printf("Longest period start: %s %s\n", data[longestStart].date, data[longestStart].time);
+    printf("Longest period end: %s %s\n", data[longestEnd].date, data[longestEnd].time);
     
     longestStart = 0;
     longestEnd = 0;
