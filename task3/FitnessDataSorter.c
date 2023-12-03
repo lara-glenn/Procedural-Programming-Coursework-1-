@@ -9,7 +9,41 @@ typedef struct {
     int steps;
 } FitnessData;
 
-FILE *open_file(char *filename, char *mode)
+
+
+
+// Function to tokenize a record
+void tokeniseRecord(char *record, char delimiter, char *date, char *time, int *steps, int *isEmpty ){
+    char *pointer = strtok(record, &delimiter);
+    if (pointer != NULL || strlen (pointer) == 0) {
+        *isEmpty = 1;
+            return;
+        }
+
+    strcpy(date, pointer);
+    pointer = strtok(NULL, &delimiter);
+        
+    if (pointer != NULL || strlen (pointer) == 0) {
+        *isEmpty = 1;
+        return;
+            
+        }
+
+    strcpy(time, pointer);
+    pointer = strtok(NULL, &delimiter);
+        
+    if (pointer != NULL || strlen (pointer) == 0) {
+        *isEmpty = 1;
+        return;
+        }
+
+    *steps = atoi(pointer);
+
+        
+    
+}
+
+FILE *open_file(char *filename, char *mode,int *isEmpty )
 {
 	FILE *input = fopen(filename, mode);
 	if (input == NULL) {
@@ -17,7 +51,8 @@ FILE *open_file(char *filename, char *mode)
         exit (1);
         
     }
-	
+    
+
 	else {
         printf("File successfully loaded.\n");
 
@@ -27,28 +62,7 @@ FILE *open_file(char *filename, char *mode)
 
 }
 
-
-// Function to tokenize a record
-void tokeniseRecord(char *record, char delimiter, char *date, char *time, int *steps) {
-    int isEmpty = 0;
-    char *pointer = strtok(record, &delimiter);
-    if (pointer != NULL) {
-        if (strlen (pointer) > 0){
-            strcpy(date, pointer);
-
-        }
-        pointer = strtok(NULL, &delimiter);
-        if (pointer != NULL) {
-            strcpy(time, pointer);
-            pointer = strtok(NULL, &delimiter);
-            if (pointer != NULL) {
-                *steps = atoi(pointer);
-            }
-        }
-    }
-}
-
-FILE* importfile()
+FILE* importfile(int *isEmpty )
 {
 
 
@@ -64,8 +78,23 @@ FILE* importfile()
     sscanf(line, "%s", filename);
 
 
-    FILE *input = open_file(filename, "r");
+    FILE *input = open_file(filename, "r", isEmpty);
+    char delimiter  = ',';
 
+    while (fgets(line, buffer_size, input)){
+
+        char date[1000];
+        char time[500];
+        int steps[1000];
+
+        tokeniseRecord(line, delimiter, date, time, steps, isEmpty);
+    
+    }
+
+    if (*isEmpty == 1) {
+        printf("Error: invalid file");
+        exit (1);
+    }
 
 
     return input;
@@ -76,8 +105,7 @@ FILE* importfile()
 
 int main() {
 
-    FILE *input = NULL;
-
-
-    input = importfile();
+    int isEmpty = 0;
+    FILE *input = importfile(&isEmpty);
+    return 0;
 }
