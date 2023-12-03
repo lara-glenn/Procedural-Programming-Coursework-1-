@@ -15,7 +15,7 @@ typedef struct {
 // Function to tokenize a record
 void tokeniseRecord(char *record, char delimiter, char *date, char *time, int *steps, int *isEmpty ){
     char *pointer = strtok(record, &delimiter);
-    if (pointer != NULL || strlen (pointer) == 0) {
+    if (pointer == NULL || strlen (pointer) == 0) {
         *isEmpty = 1;
             return;
         }
@@ -23,7 +23,7 @@ void tokeniseRecord(char *record, char delimiter, char *date, char *time, int *s
     strcpy(date, pointer);
     pointer = strtok(NULL, &delimiter);
         
-    if (pointer != NULL || strlen (pointer) == 0) {
+    if (pointer == NULL || strlen (pointer) == 0) {
         *isEmpty = 1;
         return;
             
@@ -32,7 +32,7 @@ void tokeniseRecord(char *record, char delimiter, char *date, char *time, int *s
     strcpy(time, pointer);
     pointer = strtok(NULL, &delimiter);
         
-    if (pointer != NULL || strlen (pointer) == 0) {
+    if (pointer == NULL || strlen (pointer) == 0) {
         *isEmpty = 1;
         return;
         }
@@ -46,17 +46,8 @@ void tokeniseRecord(char *record, char delimiter, char *date, char *time, int *s
 FILE *open_file(char *filename, char *mode,int *isEmpty )
 {
 	FILE *input = fopen(filename, mode);
-	if (input == NULL) {
-        printf("Error: invalid file\n");
-        exit (1);
-        
-    }
-    
 
-	else {
-        printf("File successfully loaded.\n");
-
-	}
+	
 
 	return input;
 
@@ -92,9 +83,14 @@ FILE* importfile(int *isEmpty )
     }
 
     if (*isEmpty == 1) {
-        printf("Error: invalid file");
+        printf("Error: invalid file\n");
         exit (1);
     }
+    else {
+         printf("File successfully loaded.\n");
+
+    }
+
 
 
     return input;
