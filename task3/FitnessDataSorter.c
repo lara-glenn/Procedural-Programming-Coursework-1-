@@ -70,6 +70,12 @@ FILE *open_file(char *filename, char *mode,int *isEmpty )
 {
     FILE *input = fopen(filename, mode);
 
+    if (input == NULL ){
+        printf("Error: could not load file\n");
+        *isEmpty = 1;
+        exit(1);
+    }
+
 
     return input;
 
@@ -108,7 +114,7 @@ FILE* importfile(int *isEmpty )
         if (*isEmpty == 1){
             printf("Error: invalid file\n");
             fclose(input);
-            return NULL;
+            exit (1);
         }
         
 
@@ -130,7 +136,7 @@ FILE* importfile(int *isEmpty )
     int j = 0;
     FitnessData temp;
     for (i=0; i < counter; i++){
-        for (j = 0; j < counter -1; j++){
+        for (j = 0; j < counter -1 ; j++){
             if (atoi(data[j].steps) < atoi(data[j+1].steps)) {
             temp = data[j];
             data[j] = data[j+1];
