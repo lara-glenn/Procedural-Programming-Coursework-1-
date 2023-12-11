@@ -42,11 +42,11 @@ void tokeniseRecord(char *record, char delimiter, char *date, char *time, char *
 
     pointer = strtok(NULL, &delimiter);
        
-    if (pointer == NULL) {
+    if (pointer == NULL || strlen (pointer) == 0) {
         *isEmpty = 1;
         return;
     }
-    else if (strlen (pointer) == 0) {
+    else if (pointer == "\n" || atoi(pointer) == 0 ) {
         *isEmpty = 1;
         return;
         }
@@ -58,10 +58,8 @@ void tokeniseRecord(char *record, char delimiter, char *date, char *time, char *
 
 
     pointer = strtok(NULL, &delimiter);
-    if (record[strlen(record)-1] == ',') {
-        *isEmpty = 1;
-        return; 
-    }
+
+    
    
 }
 
@@ -109,6 +107,7 @@ FILE* importfile(int *isEmpty )
 
 
         tokeniseRecord(line, delimiter, date, time, steps, isEmpty);
+        
 
         // if there is empty data in the csv file then an error is returned 
         if (*isEmpty == 1){
@@ -116,8 +115,11 @@ FILE* importfile(int *isEmpty )
             fclose(input);
             exit (1);
         }
+        else if (steps == NULL){
+            exit (1);
+        }
         
-
+    
         strcpy(data[counter].date, date);
         strcpy(data[counter].time, time);
         strcpy(data[counter].steps, steps);
