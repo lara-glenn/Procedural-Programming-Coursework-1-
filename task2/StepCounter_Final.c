@@ -247,8 +247,10 @@ void longestperiod (FILE *input)
     char filename[buffer_size];
 
     //starting at -1 as 0 index has data at it
+    // start variable holds the index of where the current period has started
     int start = -1;
     int currentIndex = 0;
+    // longest start holds the start of the current longest period
     int longestStart = -1;
     int longestEnd = -1;
 
@@ -260,17 +262,20 @@ void longestperiod (FILE *input)
 
         int stepcount = atoi(steps);
 
+        // check a 'longest period' is currently not being counted and steps is above 500
         if (stepcount > 500 && start == -1){
+            //start couting from this index
             start = currentIndex;
 
         }
 
         else if (stepcount <= 500 && start != -1){
-
+            // checks to see if the current period just recorded is longer than the previous longest period recorded
             if (currentIndex - start > longestEnd - longestStart){
                 longestStart = start;
                 longestEnd = currentIndex -1;
             }
+            //reset start variable index as the longest period has ended
             start = -1;
         }
 
